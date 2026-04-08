@@ -2,16 +2,25 @@
 
 ## Objetivo
 
-Aplicar modelos de clasificación, supervisado y/o no supervisados, a un caso con multiples clases objetivos.
+Desarrollar un sistema de Machine Learning para clasificar asteroides en base a sus características físicas y orbitales, con énfasis en la detección de Objetos Potencialmente Peligrosos (PHA) y en la interpretación astrofísica de los resultados.
 
-Asi mismo, el proceso conlleva una investigacion sobre las caracteristicas fisicas de los asteroides para comprender mejorar la clasificación.
+El proyecto busca combinar calidad de datos, análisis exploratorio y modelado predictivo para generar un pipeline reproducible y científico.
+
+## Alcance
+
+1. Calidad de datos y preprocesamiento
+2. Exploración de características físicas y orbitales
+3. Construcción de modelos de clasificación supervisada para PHA y clases de asteroide
+4. Evaluación del modelo y análisis de importancia de variables
+5. Documentación de resultados y recomendaciones astrofísicas
 
 ## Etapas del proyecto
 
-1.- Calidad de datos
-
-2.- EDA
+1. Calidad de datos
+2. EDA
+3. Modelado de Machine Learning
+4. Evaluación y resultados
 
 **Disclaimer:**
 
-Actualmente se encuentra en stand-by por falta de tiempo, queda por escalar las variables y probar como mulitples modelos de clasificacion supervisado y no supervisado.
+Actualmente se encuentra en stand-by por falta de tiempo, queda por revisar escalado de variables, selección de features y pruebas de múltiples modelos de clasificación supervisada.
