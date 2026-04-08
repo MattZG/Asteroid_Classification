@@ -8,5 +8,6 @@ Agentes incluidos:
 - `Cientifico de Datos`
 - `Astro Fisico`
 - `Ingeniero de Documentacion`
+- `Estadístico`
 
 Cada agente tiene responsabilidades específicas para asegurar que el proyecto sea limpio, reproducible y bien documentado.
