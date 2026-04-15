@@ -4,3 +4,5 @@ matplotlib
 seaborn
 notebook
 ipykernel
+scikit-learn
+joblib
