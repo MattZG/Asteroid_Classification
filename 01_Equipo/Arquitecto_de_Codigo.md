@@ -23,9 +23,10 @@ Asteroid_Classification/           ← raíz del repositorio (contiene README.md
 │   ├── 01_Originales/             ← dataset original sin modificar (Asteroid_Dataset.csv)
 │   ├── 02_Validacion/             ← dataset de validación (30%) — no tocar durante desarrollo
 │   ├── 03_Trabajo/                ← artefactos intermedios del pipeline
-│   │   ├── trabajo.csv            ← dataset de trabajo (70%)
-│   │   ├── trabajo_resultado_calidad.pickle
-│   │   └── trabajo_homogeneizado.pickle
+│   │   ├── trabajo.csv                          ← dataset de trabajo (70%)
+│   │   ├── trabajo_resultado_calidad.pickle      ← salida de Calidad de datos
+│   │   ├── trabajo_preprocesado_moid.pickle      ← salida de Preprocesamiento — Modelo A (con moid)
+│   │   └── trabajo_preprocesado.pickle           ← salida de Preprocesamiento — Modelo B (sin moid)
 │   └── 04_Caches/                 ← cachés temporales (ignorados en git si son grandes)
 │
 ├── 03_Notebooks/
@@ -39,7 +40,10 @@ Asteroid_Classification/           ← raíz del repositorio (contiene README.md
 │   ├── 01_Funciones/              ← funciones reutilizables importadas por los notebooks
 │   └── 03_Sistema/                ← notebooks de producción y despliegue
 │
-├── 04_Modelos/                    ← modelos entrenados y pipelines serializados
+├── 04_Modelos/                    ← artefactos del pipeline y modelos entrenados serializados
+│   ├── pipeline_scaler.joblib         ← RobustScaler ajustado en Preprocesamiento
+│   ├── pipeline_encoder.joblib        ← TargetEncoder ajustado en Preprocesamiento
+│   └── {algoritmo}_pha_{version}_pipeline.joblib  ← modelo completo (encoder + scaler + clf)
 ├── 05_Resultados/                 ← métricas, gráficos y reportes de evaluación final
 ├── 09_Otros/                      ← recursos varios no clasificados
 ├── README.md                      ← ancla de la raíz del repositorio
@@ -50,7 +54,7 @@ Asteroid_Classification/           ← raíz del repositorio (contiene README.md
 - `02_Datos/01_Originales/` es inmutable — nunca se sobreescribe el dataset original
 - `02_Datos/02_Validacion/` no se modifica después del Set Up — solo se usa en la evaluación final
 - `02_Datos/03_Trabajo/` contiene los artefactos intermedios en formato `.pickle`; cada etapa del pipeline consume el resultado de la anterior
-- `04_Modelos/` contiene únicamente artefactos serializados listos para usar — no scripts ni notebooks
+- `04_Modelos/` contiene todos los artefactos serializados del pipeline: transformadores ajustados en preprocesamiento (`pipeline_scaler.joblib`, `pipeline_encoder.joblib`) y modelos entrenados — no scripts ni notebooks
 
 ---
 
@@ -124,11 +128,16 @@ Cada notebook consume el output del anterior. No saltarse etapas ni reutilizar a
 
 04_Preprocesamiento
   └─ lee trabajo_resultado_calidad.pickle
-  └─ escribe → trabajo_homogeneizado.pickle + pipeline_preprocesamiento.joblib
+  └─ escribe → 02_Datos/03_Trabajo/trabajo_preprocesado_moid.pickle  (Modelo A: con moid)
+  └─ escribe → 02_Datos/03_Trabajo/trabajo_preprocesado.pickle       (Modelo B: sin moid)
+  └─ escribe → 04_Modelos/pipeline_scaler.joblib
+  └─ escribe → 04_Modelos/pipeline_encoder.joblib
 
 05_Entrenamiento ML
-  └─ lee trabajo_homogeneizado.pickle + pipeline_preprocesamiento.joblib
-  └─ escribe → 04_Modelos/{modelo}.joblib + 05_Resultados/{modelo}_metricas.json
+  └─ lee trabajo_preprocesado_moid.pickle  (Modelo A)  o  trabajo_preprocesado.pickle  (Modelo B)
+  └─ lee 04_Modelos/pipeline_scaler.joblib + pipeline_encoder.joblib
+  └─ escribe → 04_Modelos/{algoritmo}_pha_{version}_pipeline.joblib
+  └─ escribe → 05_Resultados/{algoritmo}_pha_{version}_metricas.json
 
 06_Análisis de Resultados
   └─ lee validacion.csv + modelos de 04_Modelos/

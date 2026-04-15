@@ -1,0 +1,36 @@
+[33m5dbf2e0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Reestructuracion
+[33m98dac40[m Carpeta nueva
+[33mcb9f43b[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Se completó la etapa de Preprocesamiento y se actualizaron los agentes del equipo
+[33me690c68[m Standardize notebook data-loading paths and preprocessing setup.
+[33m5d5cadb[m Delete extract_all_notations.py
+[33mb3b4852[m Delete doc_review_corrections_2.py
+[33mae57953[m Delete doc_review_corrections.py
+[33m7d11f8a[m Delete cleanup.py
+[33m0f4122d[m Delete extract_notations.py
+[33mdff56e1[m Delete final_cleanup.py
+[33mb6705f3[m Delete cleanup.bat
+[33m88dd7e8[m Delete analyze_notebook.py
+[33macc6c33[m Delete refactor_eda_notation.py
+[33m8b382f3[m Force update
+[33m40a3a5f[m Clean up temporary update scripts
+[33m7d1016d[m Add comprehensive LaTeX notation and graphics references to Interpretación Física section
+[33m0ac6503[m Redefine project objective and scope for ML asteroid classification
+[33m48ca4d9[m Fix Markdown titles and comments to match code content - Documentation Engineer review
+[33mf403ed8[m Add virtual env config, requirements, gitignore and team agent docs
+[33mf5f0434[m Delete Modulo_6.ipynb
+[33mc0994d7[m Delete Modulo_3.ipynb
+[33m38e22ea[m Delete Modulo_4.ipynb
+[33m083940a[m Update README.md
+[33m11c7f6c[m Update README.md
+[33m2375d4f[m Create README.md
+[33mbbdb4c0[m Se creó con Colab
+[33m6fd5441[m Se creó con Colab
+[33m6bc2b38[m Se creó con Colab
+[33m65997de[m Se creó con Colab
+[33m50143a9[m Update
+[33m4915851[m Update
+[33m351eca0[m Update
+[33m1bcb098[m EDA update
+[33m91454e5[m EDA update
+[33m7200b45[m EDA
+[33m1259641[m Initial commit

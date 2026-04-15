@@ -107,12 +107,18 @@ El pipeline sigue este orden estricto. Cada etapa opera **únicamente sobre el d
 - Identificar variables de alta discriminancia: `moid`, `a`, `e`, `H`, `D`
 
 ### Etapa 3 — Preprocesamiento (`04_Preprocesamiento.ipynb`)
-- Cargar resultado del paso anterior
-- Codificar `class` (variable categórica) con encoding adecuado
-- Escalar variables numéricas según el modelo a usar
-- Separar features (`X`) del target (`y = pha`)
-- Tratar el desbalance de clases (ver sección específica)
-- Guardar artefactos de preprocesamiento en `02_Datos/03_Trabajo/`
+- Cargar `trabajo_resultado_calidad.pickle`
+- Eliminar identificadores (`spkid`, `full_name`)
+- Codificar `pha` con mapeo binario (`Y→1`, `N→0`) y `class` con TargetEncoding
+- Escalar variables numéricas con `RobustScaler` (después del encoding)
+- Eliminar variables redundantes: `moid_ld`, `ad`, `per`, `per_y`, `n`
+- Tratar el desbalance de clases en el entrenamiento (ver sección específica)
+- Guardar en `02_Datos/03_Trabajo/`:
+  - `trabajo_preprocesado_moid.pickle` — Modelo A: incluye `moid`
+  - `trabajo_preprocesado.pickle` — Modelo B: sin `moid`
+- Guardar en `04_Modelos/`:
+  - `pipeline_scaler.joblib` — RobustScaler ajustado
+  - `pipeline_encoder.joblib` — TargetEncoder ajustado
 
 ### Etapa 4 — Modelado y Evaluación
 - Entrenar modelo de clasificación supervisada sobre el dataset de trabajo
