@@ -96,6 +96,9 @@ Abreviaturas: `logreg`, `rfc`, `dtc`, `xgb`, `lgbm`, `svc`, `knn`.
 - No aplicar transformaciones del dataset de trabajo al dataset de validación por separado — usar los mismos transformadores entrenados en trabajo (`.fit_transform()` en trabajo, `.transform()` en validación)
 - No evaluar sobre validación durante el desarrollo — reservar exclusivamente para la evaluación final
 
+## Idioma
+Responder en español neutro, sin regionalismos ni modismos.
+
 ## Estado actual
 
 - [x] Setup
