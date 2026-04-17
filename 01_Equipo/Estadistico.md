@@ -171,7 +171,6 @@ Un `KFold` sin estratificar en este dataset puede generar folds sin ningún ejem
 
 ## Qué NO Hacer
 
-- No usar `accuracy` como métrica de selección de modelos con datos desbalanceados
 - No aplicar SMOTE al dataset completo antes de la validación cruzada — siempre dentro del pipeline
 - No usar `KFold` sin estratificar cuando el target está desbalanceado
 - No reportar solo métricas de la clase mayoritaria — siempre reportar métricas de la clase PHA por separado

@@ -80,52 +80,24 @@ El proyecto busca construir un pipeline de Machine Learning para clasificar aste
 
 ---
 
-## Procedimiento del Pipeline de Entrenamiento
+## Decisiones de Implementación por Etapa
 
-El pipeline sigue este orden estricto. Cada etapa opera **únicamente sobre el dataset de trabajo**. El dataset de validación permanece intacto hasta la evaluación final.
+El flujo de artefactos (qué lee y escribe cada notebook) está documentado en `CLAUDE.md`.
 
-### Etapa 0 — División del Dataset (`01_Set Up.ipynb`)
-- Cargar el dataset original (`Asteroid_Dataset.csv`)
-- Extraer 30% aleatorio como dataset de validación → guardar en `02_Datos/02_Validacion/validacion.csv`
-- El 70% restante es el dataset de trabajo → guardar en `02_Datos/03_Trabajo/trabajo.csv`
-- **Importante**: fijar semilla aleatoria para garantizar reproducibilidad
+**Calidad de Datos**
+- `diameter` y `diameter_sigma` se cargan como `object` por valores `?` — convertir con `pd.to_numeric(..., errors='coerce')`
+- Tras la conversión aparecen nulos: `diameter` (3 nulos), `diameter_sigma` (66 nulos) — imputar con mediana
+- Resultado esperado: 0 duplicados
 
-### Etapa 1 — Calidad de Datos (`02_Calidad de datos.ipynb`)
-- Cargar `trabajo.csv`
-- Revisar tipos de datos: `diameter` y `diameter_sigma` se cargan como `object` por valores no numéricos (ej. `?`) — convertir con `pd.to_numeric(..., errors='coerce')`
-- Tras la conversión aparecen nulos: `diameter` (3 nulos), `diameter_sigma` (66 nulos)
-- **Tratamiento de nulos**: imputar con la mediana de cada columna para no alterar la distribución
-- Verificar duplicados (resultado esperado: 0 duplicados)
-- Guardar resultado en `02_Datos/03_Trabajo/trabajo_resultado_calidad.pickle`
-
-### Etapa 2 — Análisis Exploratorio (`03_EDA.ipynb`)
-- Cargar `trabajo_resultado_calidad.pickle`
-- Analizar distribuciones de variables numéricas (skewness, curtosis)
-- Revisar el desbalance de clases en `pha`
-- Estudiar correlaciones entre variables y su relación con el target
+**EDA**
+- Analizar distribuciones numéricas: skewness, curtosis
 - Aplicar ANOVA para comparar medias entre grupos PHA y no-PHA
-- Identificar variables de alta discriminancia: `moid`, `a`, `e`, `H`, `D`
+- Variables de alta discriminancia esperadas: `moid`, `a`, `e`, `H`, `diameter`
 
-### Etapa 3 — Preprocesamiento (`04_Preprocesamiento.ipynb`)
-- Cargar `trabajo_resultado_calidad.pickle`
-- Eliminar identificadores (`spkid`, `full_name`)
-- Codificar `pha` con mapeo binario (`Y→1`, `N→0`) y `class` con TargetEncoding
-- Escalar variables numéricas con `RobustScaler` (después del encoding)
-- Eliminar variables redundantes: `moid_ld`, `ad`, `per`, `per_y`, `n`
-- Tratar el desbalance de clases en el entrenamiento (ver sección específica)
-- Guardar en `02_Datos/03_Trabajo/`:
-  - `trabajo_preprocesado_moid.pickle` — Modelo A: incluye `moid`
-  - `trabajo_preprocesado.pickle` — Modelo B: sin `moid`
-- Guardar en `04_Modelos/`:
-  - `pipeline_scaler.joblib` — RobustScaler ajustado
-  - `pipeline_encoder.joblib` — TargetEncoder ajustado
-
-### Etapa 4 — Modelado y Evaluación
-- Entrenar modelo de clasificación supervisada sobre el dataset de trabajo
-- Validar con cross-validation estratificada (mantiene proporción de clases)
-- Evaluar con métricas adecuadas para datos desbalanceados (ver sección específica)
-- Guardar modelo entrenado en `04_Modelos/`
-- Evaluación final sobre `validacion.csv` — **solo una vez al final**
+**Entrenamiento**
+- Usar `StratifiedKFold` — mantiene la proporción de clases en cada fold
+- Guardar modelo siguiendo la convención de nombres de `CLAUDE.md`
+- Evaluación final sobre `validacion.csv` — solo una vez al final
 
 ---
 
@@ -176,18 +148,7 @@ Según el resultado de la etapa `02_Calidad de datos`:
 
 ## Responsabilidades Operativas
 
-- Asegurar que cada notebook cargue los datos desde la etapa inmediatamente anterior (no reutilizar datos intermedios de etapas saltadas)
-- Usar rutas relativas a la raíz del repositorio mediante `pathlib` — nunca rutas absolutas
-- Verificar que el dataset de validación no sea tocado durante calidad, EDA ni preprocesamiento
 - Documentar cada decisión de transformación con su justificación en las celdas markdown del notebook
 - Verificar reproducibilidad: fijar semillas (`random_state`) en todas las operaciones estocásticas
 
 ---
-
-## Qué NO Hacer
-
-- No imputar con la media en distribuciones asimétricas — usar mediana
-- No usar `accuracy` como métrica en clasificación desbalanceada
-- No incluir `spkid` ni `full_name` como features del modelo
-- No aplicar transformaciones del dataset de trabajo al dataset de validación por separado — usar los mismos transformadores entrenados en trabajo (`.fit_transform()` en trabajo, `.transform()` en validación)
-- No evaluar sobre validación durante el desarrollo — reservar exclusivamente para la evaluación final

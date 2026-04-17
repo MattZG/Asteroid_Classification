@@ -195,21 +195,7 @@ El README debe tener una sección de estado que indique qué etapas están compl
 
 ## Mensajes de Commit
 
-Los commits deben ser descriptivos del resultado general, no del detalle técnico. El objetivo es que el historial de git cuente el avance del proyecto de forma legible.
-
-### Formato
-
-Frases cortas en pasado, sin puntuación al final, enfocadas en el resultado:
-
-```
-Se actualizó la etapa de EDA
-Se completó la fase de Entrenamiento
-Se corrigieron los tipos de datos en Calidad de datos
-Se agregó análisis de importancia de variables
-Se completó el pipeline de Preprocesamiento
-Se actualizó el README con los resultados finales
-Se completó la evaluación del modelo sobre validación
-```
+El formato y ejemplos de commits están documentados en `CLAUDE.md`.
 
 ### Reglas
 - Una frase, no una lista de cambios técnicos

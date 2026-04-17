@@ -60,27 +60,9 @@ Asteroid_Classification/           ← raíz del repositorio (contiene README.md
 
 ## Manejo de Rutas
 
-### Patrón estándar (usar en todos los notebooks)
+El patrón `repo_root` está documentado en `CLAUDE.md`. Definirlo en la primera celda de código de cada notebook, antes de cualquier carga de datos.
 
-Todos los notebooks deben localizar la raíz del repositorio de forma dinámica, sin rutas absolutas. El patrón aprobado es:
-
-```python
-from pathlib import Path
-
-repo_root = Path.cwd().resolve()
-while repo_root != repo_root.parent and not (repo_root / "README.md").exists():
-    repo_root = repo_root.parent
-
-if not (repo_root / "README.md").exists():
-    raise FileNotFoundError("No se encontró la raíz del repositorio (README.md).")
-```
-
-Este patrón funciona porque:
-- Jupyter arranca con `cwd` = carpeta del notebook
-- Sube por los directorios padres hasta encontrar `README.md`, que existe solo en la raíz del repositorio
-- El resultado `repo_root` es válido desde cualquier máquina, sin importar dónde esté clonado el repositorio
-
-### Definición de rutas de datos (celda inmediatamente después)
+### Constantes de ruta recomendadas (celda inmediatamente después de `repo_root`)
 
 ```python
 # Rutas de datos — ajustar el nombre del archivo según la etapa
@@ -110,51 +92,9 @@ df = pd.read_pickle("C:/Users/matia/OneDrive/Escritorio/Asteroid_Classification/
 
 ---
 
-## Flujo de Artefactos entre Notebooks
-
-Cada notebook consume el output del anterior. No saltarse etapas ni reutilizar archivos intermedios de etapas anteriores.
-
-```
-01_Set Up
-  └─ escribe → trabajo.csv + validacion.csv
-
-02_Calidad de datos
-  └─ lee trabajo.csv
-  └─ escribe → trabajo_resultado_calidad.pickle
-
-03_EDA
-  └─ lee trabajo_resultado_calidad.pickle
-  └─ (no escribe artefactos — solo análisis)
-
-04_Preprocesamiento
-  └─ lee trabajo_resultado_calidad.pickle
-  └─ escribe → 02_Datos/03_Trabajo/trabajo_preprocesado_moid.pickle  (Modelo A: con moid)
-  └─ escribe → 02_Datos/03_Trabajo/trabajo_preprocesado.pickle       (Modelo B: sin moid)
-  └─ escribe → 04_Modelos/pipeline_scaler.joblib
-  └─ escribe → 04_Modelos/pipeline_encoder.joblib
-
-05_Entrenamiento ML
-  └─ lee trabajo_preprocesado_moid.pickle  (Modelo A)  o  trabajo_preprocesado.pickle  (Modelo B)
-  └─ lee 04_Modelos/pipeline_scaler.joblib + pipeline_encoder.joblib
-  └─ escribe → 04_Modelos/{algoritmo}_pha_{version}_pipeline.joblib
-  └─ escribe → 05_Resultados/{algoritmo}_pha_{version}_metricas.json
-
-06_Análisis de Resultados
-  └─ lee validacion.csv + modelos de 04_Modelos/
-  └─ escribe → 05_Resultados/reporte_final.{ext}
-```
-
----
-
 ## Convención de Nombres para `04_Modelos/`
 
-Al entrenar múltiples modelos y versiones, sin convención los archivos se acumulan sin contexto (`modelo_final.pkl`, `modelo2.pkl`, `modelo_bueno.pkl`). La convención permite saber qué hay en cada archivo sin abrirlo.
-
-### Formato
-
-```
-{algoritmo}_{target}_{version}.{ext}
-```
+Al entrenar múltiples modelos y versiones, sin convención los archivos se acumulan sin contexto (`modelo_final.pkl`, `modelo2.pkl`, `modelo_bueno.pkl`). El formato y las abreviaturas de algoritmos están en `CLAUDE.md`.
 
 ### Ejemplos para este proyecto
 
@@ -181,23 +121,10 @@ pipeline = joblib.load(MODELOS / "rfc_pha_v1_pipeline.joblib")
 y_pred = pipeline.predict(X_nuevo)
 ```
 
-### Abreviaturas de algoritmos sugeridas
-
-| Abreviatura | Algoritmo |
-|-------------|-----------|
-| `logreg` | Logistic Regression |
-| `rfc` | Random Forest Classifier |
-| `dtc` | Decision Tree Classifier |
-| `xgb` | XGBoost |
-| `lgbm` | LightGBM |
-| `svc` | Support Vector Classifier |
-| `knn` | K-Nearest Neighbors |
-
 ---
 
 ## Responsabilidades Operativas
 
-- Verificar que ningún notebook use rutas absolutas antes de hacer commit
 - Asegurar que cada nueva etapa del pipeline tenga su notebook numerado en secuencia dentro de `03_Notebooks/01_Desarrollo/`
 - Confirmar que `04_Modelos/` solo contenga artefactos serializados — no scripts intermedios ni versiones sin identificar
 - Revisar que `02_Datos/01_Originales/` no tenga archivos modificados respecto al dataset original
