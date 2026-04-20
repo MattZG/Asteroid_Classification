@@ -17,18 +17,29 @@ El kernel de Jupyter debe apuntar a `.\venv\Scripts\python.exe`. Si VSCode no lo
 Proyecto de clasificación supervisada de asteroides (PHA vs. no PHA). El pipeline es una secuencia **estrictamente ordenada** de notebooks en `03_Notebooks/01_Desarrollo/`. Cada notebook consume el artefacto `.pickle` del anterior — no saltarse etapas.
 
 ```
-01_Set_Up          → trabajo.csv + validacion.csv
-02_Calidad_de_datos→ trabajo_resultado_calidad.pickle
+01_Set_Up          → 02_Datos/03_Trabajo/trabajo.csv
+                     02_Datos/02_Validacion/validacion.csv
+02_Calidad_de_datos→ 02_Datos/03_Trabajo/trabajo_resultado_calidad.pickle
 03_EDA             → (solo análisis, sin artefactos)
-04_Preprocesamiento→ trabajo_preprocesado_moid.pickle  (Modelo A: con moid)
-                     trabajo_preprocesado.pickle        (Modelo B: sin moid)
+04_Preprocesamiento→ 02_Datos/03_Trabajo/trabajo_preprocesado_moid.pickle  (Exp A: con moid)
+                     02_Datos/03_Trabajo/trabajo_preprocesado.pickle        (Exp B: sin moid)
                      04_Modelos/pipeline_scaler.joblib
                      04_Modelos/pipeline_encoder.joblib
 05_Entrenamiento   → 04_Modelos/{algoritmo}_pha_{experimento}_{version}_pipeline.joblib
-06_Resultados      → 05_Resultados/reporte_final.*
+06_Analisis        → 05_Resultados/*.png
+07_Produccion      → 05_Resultados/reporte_final.*
 ```
 
-`02_Datos/02_Validacion/validacion.csv` no se toca hasta la evaluación final en el notebook 06.
+## Estructura de Carpetas de Datos
+
+```
+02_Datos/
+├── 01_Originales/   → Asteroid_Dataset.csv  (dataset original, no modificar)
+├── 02_Validacion/   → validacion.csv         (reservado para evaluación final en notebook 07)
+└── 03_Trabajo/      → artefactos generados por cada etapa del pipeline
+```
+
+`02_Datos/02_Validacion/validacion.csv` no se toca hasta la evaluación final.
 
 ## Patrón de Rutas (obligatorio en todos los notebooks)
 
@@ -93,6 +104,10 @@ Se agregó análisis de importancia de variables
 Experimentos definidos: `A` (con `moid`), `B` (sin `moid`).
 
 Abreviaturas de algoritmos: `logreg`, `rfc`, `dtc`, `xgb`, `lgbm`, `svc`, `knn`.
+
+## Convenciones de Notebooks
+
+Todos los `import` van en la celda de importaciones al inicio del notebook (Sección 1). Si durante el desarrollo se necesita un módulo nuevo, se agrega en esa celda — nunca inline en la celda donde se usa.
 
 ## Qué NO Hacer
 
