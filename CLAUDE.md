@@ -117,6 +117,11 @@ Todos los `import` van en la celda de importaciones al inicio del notebook (Secc
 - No aplicar transformaciones del dataset de trabajo al dataset de validación por separado — usar los mismos transformadores entrenados en trabajo (`.fit_transform()` en trabajo, `.transform()` en validación)
 - No evaluar sobre validación durante el desarrollo — reservar exclusivamente para la evaluación final
 
+## .gitignore
+No modificar el .gitignore sin consultar. El archivo actual es intencional.
+Ignorar siempre: venv/, __pycache__/, *.pyc, .ipynb_checkpoints/, 
+data/raw/, data/processed/, *.csv, *.parquet, *.pkl, models/, .env
+
 ## Idioma
 Responder en español neutro, sin regionalismos ni modismos.
 
@@ -126,6 +131,6 @@ Responder en español neutro, sin regionalismos ni modismos.
 - [x] Calidad de datos
 - [x] EDA
 - [x] Preprocesamiento
-- [ ] Entrenamiento
+- [x] Entrenamiento
 - [ ] Analisis del modelo
 - [ ] Produccion
