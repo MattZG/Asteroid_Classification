@@ -17,14 +17,14 @@ El kernel de Jupyter debe apuntar a `.\venv\Scripts\python.exe`. Si VSCode no lo
 Proyecto de clasificación supervisada de asteroides (PHA vs. no PHA). El pipeline es una secuencia **estrictamente ordenada** de notebooks en `03_Notebooks/01_Desarrollo/`. Cada notebook consume el artefacto `.pickle` del anterior — no saltarse etapas.
 
 ```
-01_Set Up          → trabajo.csv + validacion.csv
-02_Calidad datos   → trabajo_resultado_calidad.pickle
+01_Set_Up          → trabajo.csv + validacion.csv
+02_Calidad_de_datos→ trabajo_resultado_calidad.pickle
 03_EDA             → (solo análisis, sin artefactos)
 04_Preprocesamiento→ trabajo_preprocesado_moid.pickle  (Modelo A: con moid)
                      trabajo_preprocesado.pickle        (Modelo B: sin moid)
                      04_Modelos/pipeline_scaler.joblib
                      04_Modelos/pipeline_encoder.joblib
-05_Entrenamiento   → 04_Modelos/{algoritmo}_pha_{version}_pipeline.joblib
+05_Entrenamiento   → 04_Modelos/{algoritmo}_pha_{experimento}_{version}_pipeline.joblib
 06_Resultados      → 05_Resultados/reporte_final.*
 ```
 
@@ -69,6 +69,10 @@ Nunca usar rutas absolutas. Construir todas las rutas a partir de `repo_root`.
 
 **Encoding**: `pha` → binario (Y=1/N=0). `class` → TargetEncoding (proporción suavizada de PHA por clase). Scaler: `RobustScaler` (resistente a outliers). El encoding se aplica **antes** del escalado para que `class` quede como `float64`.
 
+## Convenciones de Nombres de Archivos
+
+Usar guion bajo `_` en lugar de espacios en todos los nombres de archivos y carpetas del proyecto. Ejemplos: `01_Set_Up.ipynb`, `02_Calidad_de_datos.ipynb`.
+
 ## Convenciones de Commits
 
 Frases cortas en pasado, en español, sin puntuación final, sin Co-Authored-By:
@@ -82,11 +86,13 @@ Se agregó análisis de importancia de variables
 ## Nombres de Artefactos en `04_Modelos/`
 
 ```
-{algoritmo}_pha_{version}_pipeline.joblib   # pipeline completo para predicción
-{algoritmo}_pha_{version}_metricas.json     # métricas de esa versión
+{algoritmo}_pha_{experimento}_{version}_pipeline.joblib   # pipeline completo para predicción
+{algoritmo}_pha_{experimento}_{version}_metricas.json     # métricas de esa versión
 ```
 
-Abreviaturas: `logreg`, `rfc`, `dtc`, `xgb`, `lgbm`, `svc`, `knn`.
+Experimentos definidos: `A` (con `moid`), `B` (sin `moid`).
+
+Abreviaturas de algoritmos: `logreg`, `rfc`, `dtc`, `xgb`, `lgbm`, `svc`, `knn`.
 
 ## Qué NO Hacer
 
