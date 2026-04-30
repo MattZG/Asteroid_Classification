@@ -2,3 +2,15 @@ venv/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+data/raw/
+data/processed/
+*.csv
+*.parquet
+*.pkl
+*.pickle
+models/
+.env
+.DS_Store
+02_Datos/01_Original/
+02_Datos/03_Trabajo/
+05_Resultados/*.png

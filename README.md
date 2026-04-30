@@ -18,16 +18,16 @@ El proyecto combina calidad de datos, análisis exploratorio y modelado supervis
 ```
 Asteroid_Classification/
 ├── 01_Equipo/               ← agentes especializados del proyecto
-├── 02_Datos/
+├── 01_Datos/
 │   ├── 01_Originales/       ← dataset original (inmutable)
 │   ├── 02_Validacion/       ← dataset de validación (reservado para evaluación final)
 │   ├── 03_Trabajo/          ← artefactos intermedios del pipeline
 │   └── 04_Caches/
-├── 03_Notebooks/
+├── 02_Notebooks/
 │   ├── 01_Desarrollo/       ← pipeline de desarrollo (6 etapas)
 │   └── 03_Sistema/          ← notebooks de producción
-├── 04_Modelos/              ← modelos y pipelines serializados
-├── 05_Resultados/           ← métricas y reportes de evaluación final
+├── 03_Modelos/              ← modelos y pipelines serializados
+├── 04_Resultados/           ← métricas y reportes de evaluación final
 └── requirements.txt
 ```
 

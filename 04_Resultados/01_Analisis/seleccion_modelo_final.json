@@ -1,0 +1,20 @@
+{
+  "modelo": "xgb_pha_B_v1_pipeline.joblib",
+  "experimento": "B",
+  "algoritmo": "XGBoost",
+  "umbral": 0.077681,
+  "metricas_cv": {
+    "f1_mean": 0.6156,
+    "f1_std": 0.0633,
+    "auc_roc_mean": 0.9976,
+    "avg_precision_mean": 0.669
+  },
+  "metricas_umbral_opt": {
+    "recall": 0.8785,
+    "precision": 0.4292,
+    "fn": 13,
+    "fp": 125,
+    "fn_pct": 12.15
+  },
+  "justificacion": "El Experimento A (RFC con moid) queda descartado por tautología: moid < 0.05 UA forma parte de la definición formal de PHA. El Experimento B (XGBoost sin moid) aprendió las condiciones físicas orbitales subyacentes (q, a) con AUC-ROC=0.9976. El umbral óptimo por F2-score reduce los FN de 25 a 13, capturando el 87.9% de los PHAs a costa de 125 FP totales — tradeoff operativamente aceptable en detección de riesgo planetario."
+}
